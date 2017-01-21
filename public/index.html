@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome to Firebase Hosting</title>
+    <style media="screen">
+      body {
+        font-family: Roboto, Arial, sans-serif;
+        background: #ECEFF1;
+        color: rgba(0,0,0,0.87);
+      }
+
+      a {
+        color: rgb(3,155,229);
+      }
+
+      #message {
+        max-width: 400px;
+        margin: 40px auto;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.14),0 2px 1px -1px rgba(0,0,0,0.12);
+        border-radius: 2px;
+        background: white;
+        padding: 16px 24px;
+      }
+
+      #message h1 {
+        font-size: 22px;
+        font-weight: 500;
+        text-align: center;
+        margin: 0 0 16px;
+      }
+
+      #message p {
+        font-weight: 300;
+        line-height: 150%;
+      }
+
+      #message ul {
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      #message li a {
+        display: inline-block;
+        padding: 8px;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-weight: 500;
+        background: rgb(3,155,229);
+        color: white;
+        border: 1px solid rgb(3,155,229);
+        border-radius: 3px;
+        font-size: 14px;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+      }
+    </style>
+  </head>
+  <body>
+      <h1>Welcome to yuval first app</h1>
+	<h1 id="fb-welcome">is this working? </h1>
+		
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '969130076470016',
+      xfbml      : true,
+      version    : 'v2.7'
+    });
+
+    // ADD ADDITIONAL FACEBOOK CODE HERE
+<h1 id="fb-welcome"></h1>
+function onLogin(response) {
+  if (response.status == 'connected') {
+    FB.api('/me?fields=first_name', function(data) {
+      var welcomeBlock = document.getElementById('fb-welcome');
+      welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
+    });
+  }
+}
+// login with facebook with extra permissions
+		function login() {
+			FB.login(function(response) {
+				if (response.status === 'connected') {
+		    		document.getElementById('status').innerHTML = 'We are connected.';
+		    		document.getElementById('login').style.visibility = 'hidden';
+		    	} else if (response.status === 'not_authorized') {
+		    		document.getElementById('status').innerHTML = 'We are not logged in.'
+		    	} else {
+		    		document.getElementById('status').innerHTML = 'You are not logged into Facebook.';
+		    	}
+			}, {scope: 'email'});
+		}
+		
+		// getting basic user info
+		function getInfo() {
+			FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id'}, function(response) {
+				document.getElementById('status').innerHTML = response.id;
+			});
+		}
+
+FB.getLoginStatus(function(response) {
+  // Check login status on load, and if the user is
+  // already logged in, go directly to the welcome message.
+  if (response.status == 'connected') {
+    onLogin(response);
+  } else {
+    // Otherwise, show Login dialog first.
+    FB.login(function(response) {
+      onLogin(response);
+    }, {scope: 'user_friends, email'});
+  }
+});
+	 
+ };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+	
+		
+	</script>
+
+	<div id="status"></div>
+	<button onclick="getInfo()">Get Info</button>
+	<button onclick="login()" id="login">Login</button>
+  </body>
+</html>
